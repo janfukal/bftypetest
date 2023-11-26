@@ -1,0 +1,44 @@
+@import url('https://fonts.googleapis.com/css2?family=Lexend+Deca&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Roboto+Mono&display=swap');
+
+*,
+*::before,
+*::after {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+:root {
+  --primary: red;
+  --fg-100: rgb(249,250,251);
+  --fg-200: rgb(194,201,214);
+  --bg-100: rgb(18,18,18);
+  --bg-50: rgb(36,36,36);
+}
+
+html,
+body,
+#app {
+  height: 100%;
+}
+
+body {
+  font-family: 'Roboto Mono', monospace;
+  color: var(--fg-100);
+  background-color: var(--bg-100);
+}
+
+button {
+  font: inherit;
+  color: inherit;
+  background: none;
+  border: none;
+  opacity: 0.4;
+  transition: all 0.3s ease;
+
+  &:hover {
+    cursor: pointer;
+    opacity: 1;
+  }
+}
