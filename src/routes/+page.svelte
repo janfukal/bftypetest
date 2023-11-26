@@ -238,17 +238,19 @@
   .words {
     --line-height: 1.3em;
     --lines: 3;
-
-    width: 100%;
+    position: relative;
+    width: 40%;
     max-height: calc(var(--line-height) * var(--lines) * 1.42);
     display: flex;
     flex-wrap: wrap;
     gap: 0.6em;
-    position: relative;
     font-size: 1.5rem;
     line-height: var(--line-height);
     overflow: hidden;
     user-select: none;
+    justify-content: left; /* Center horizontally */
+    align-items: center; /* Center vertically */
+    margin: 0 auto; /* Center within its container horizontally */
 
     .letter {
       opacity: 0.4;
@@ -265,18 +267,29 @@
         color: var(--primary);
         opacity: 1;
       }
+
+  @keyframes blink {
+    0%, 50%, 100% {
+        opacity: 1;
+    }
+    25%, 75% {
+    opacity: 0;
+    }
+  }
   .caret {
+    display: block;
     position: absolute;
     height: 1.8rem;
-    top: 0;
-    border-right: 1px solid var(--primary);
-    animation: caret 1s infinite;
+    top: 0; /* Initial position at the top */
+    left: -1px; /* Initial position at the beginning */
+    border-right: 3px solid #6008c4;
+    animation: blink 1.8s infinite;
     transition: all 0.2s ease;
   }
 
   .game {
     position: relative;
-
+    
     .input {
       position: absolute;
       opacity: 0;
@@ -284,7 +297,9 @@
 
     .time {
       position: absolute;
-      top: -48px;
+      top: -40px;
+      left: 50%;
+      transform: translate(-50%, -50%);
       font-size: 1.5rem;
       color: var(--fg-100);
       opacity: 0;
@@ -300,22 +315,37 @@
       display: grid;
       justify-content: center;
       margin-top: 2rem;
+      padding-bottom: 30px;
     }
   }
 
   .results {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+
     .title {
+      display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
       font-size: 2rem;
       color: var(--fg-200);
     }
 
     .score {
+      display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
       font-size: 4rem;
       color: var(--primary);
     }
     
     .play {
       margin-top: 1rem;
+      padding-bottom: 30px;
     }
   }
 </style>

@@ -15,6 +15,7 @@
   <main>
     <slot />
   </main>
+
   <footer>
     <span>BF PROJECT @ Střední průmyslová škola Třebíč</span>
     <div>Jan Fukal | Tomáš Buriánek</div>
