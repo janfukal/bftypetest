@@ -75,18 +75,25 @@
     }
   }
 
-  function checkLetter(){
-    const currentLetter = words[wordIndex][letterIndex]
+  function checkLetter() {
+  const currentLetter = words[wordIndex][letterIndex];
 
-    if (typedLetter === currentLetter){
-        letterEl.dataset.letter = 'spravne'
-        increaseScore()
-    }
+  if (typedLetter === currentLetter && typedLetter !== ' ') {
+    letterEl.dataset.letter = 'spravne';
+    increaseScore();
 
-    if (typedLetter !== currentLetter){
-        letterEl.dataset.letter = 'spatne'
-    }
+    const originalAnimation = caretEl.style.animation;
+
+    caretEl.style.animation = 'none';
+    setTimeout(() => {
+      caretEl.style.animation = 'blink 1.8s infinite';
+    }, 500);
   }
+
+  if (typedLetter !== currentLetter) {
+    letterEl.dataset.letter = 'spatne';
+  }
+}
 
   function increaseScore(){
     correctLetters += 1
@@ -97,16 +104,21 @@
   }
 
   function nextWord() {
-    const isNotFirstLetter = letterIndex !== 0
-    const isOneLetterWord = words[wordIndex].length === 1
+  const isNotFirstLetter = letterIndex !== 0;
+  const isOneLetterWord = words[wordIndex].length === 1;
 
-    if (isNotFirstLetter || isOneLetterWord) {
-      wordIndex += 1
-      letterIndex = 0
-      increaseScore()
-      moveCaret()
+  if (isNotFirstLetter || isOneLetterWord) {
+    wordIndex += 1;
+    letterIndex = 0;
+    increaseScore();
+    moveCaret();
+
+    if (wordIndex < words.length) {
+      letterEl = wordsEl.children[wordIndex].children[letterIndex] as HTMLSpanElement;
+      moveCaret();
     }
   }
+}
 
   function updateLine(){
     const wordEl = wordsEl.children[wordIndex]
@@ -123,10 +135,15 @@
   }
 
   function moveCaret() {
-    const offset = 4
-    caretEl.style.top = `${letterEl.offsetTop + offset}px`
-    caretEl.style.left = `${letterEl.offsetLeft + letterEl.offsetWidth}px`
+  const offset = 4;
+  caretEl.style.top = `${letterEl.offsetTop + offset}px`;
+
+  if (letterIndex === 0) {
+    caretEl.style.left = `${letterEl.offsetLeft}px`;
+  } else {
+    caretEl.style.left = `${letterEl.offsetLeft + letterEl.offsetWidth}px`;
   }
+}
 
   function startGame() {
     setGameState('probiha')
@@ -165,21 +182,19 @@
     game = state
   }
 
-  function handleKeydown(event: KeyboardEvent) {
-    if (event.code == 'Space')
-    {
-        event.preventDefault()
-        if (game === 'probiha') 
-        {
-          nextWord()
-        }
-    }
+function handleKeydown(event: KeyboardEvent) {
+  const isLetter = /^[a-zA-Z]$/.test(event.key);
 
-    if (game === 'cekani na input')
-    {
-        startGame()
-    }
+  if (isLetter && game === 'cekani na input') {
+    startGame();
   }
+
+  if (event.code === 'Space' && game === 'probiha') {
+    event.preventDefault();
+    nextWord();
+    moveCaret(); 
+  }
+}
   onMount(async () => {
     getWords(100)
     focusInput()
@@ -239,7 +254,7 @@
     --line-height: 1.3em;
     --lines: 3;
     position: relative;
-    width: 40%;
+    width: 1250px;
     max-height: calc(var(--line-height) * var(--lines) * 1.42);
     display: flex;
     flex-wrap: wrap;
@@ -248,9 +263,9 @@
     line-height: var(--line-height);
     overflow: hidden;
     user-select: none;
-    justify-content: left; /* Center horizontally */
-    align-items: center; /* Center vertically */
-    margin: 0 auto; /* Center within its container horizontally */
+    justify-content: left;
+    align-items: center;
+    margin: 0 auto;
 
     .letter {
       opacity: 0.4;
@@ -280,8 +295,8 @@
     display: block;
     position: absolute;
     height: 1.8rem;
-    top: 0; /* Initial position at the top */
-    left: -1px; /* Initial position at the beginning */
+    top: 0;
+    left: -1px;
     border-right: 3px solid #6008c4;
     animation: blink 1.8s infinite;
     transition: all 0.2s ease;

@@ -8,7 +8,7 @@
 
 <div class="layout">
   <nav>
-    <h1><a href="https://bftypetest.vercel.app/">bftypetest</a></h1>
+    <h1><a href="#">bftypetest</a></h1>
     <div><a href="signup.php">Login | Register</a></div>
   </nav>
   
