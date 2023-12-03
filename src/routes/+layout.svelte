@@ -1,64 +1,84 @@
 <script lang="ts">
   import '../styles/app.scss'
+  import trophyIcon from './icons/trophy.png';
+  import userIcon from './icons/user.png';
+  import igIcon from './icons/instagram.png';
 </script>
-
 <svelte:head>
   <title>bftypetest</title>
 </svelte:head>
 
 <div class="layout">
+
   <nav>
-    <h1><a href="#">bftypetest</a></h1>
-    <div><a href="signup.php">Login | Register</a></div>
+    <ul>
+      <li class="logo"><a href="/"><h1>bftypetest</h1></a></li>
+      <li><a href="leaderboards.php"><img src={trophyIcon} alt="Trophy Icon" /> </a></li>
+      <li><a href="signup.php"> <img src={userIcon} alt="User Icon" /> </a></li>
+    </ul>
   </nav>
-  
+
   <main>
     <slot />
   </main>
 
   <footer>
-    <span>BF PROJECT @ Střední průmyslová škola Třebíč</span>
-    <div>Jan Fukal | Tomáš Buriánek</div>
+    <ul>
+      <li><a href="https://www.instagram.com/bflmpsvz.dev/" target="_blank"> <img src={igIcon} alt="Instagram Icon" /> </a></li>
+      <li>bflmpsvz @ Střední průmyslová škola Třebíč</li>
+    </ul>
   </footer>
+
 </div>
-
 <style lang="scss">
-  h1 {
-    font-family: 'Lexend Deca', sans-serif;
-    font-size: 1.8rem;
-    color: var(--fg-200);
-    letter-spacing: 2px;
-  }
-
   .layout {
     height: 100%;
     display: grid;
     grid-template-rows: auto 1fr;
     align-items: center;
-    padding: 2rem;
   }
-
+  img{
+    width: 20px;
+    filter: invert(100);
+    margin-top: 6px;
+  }
   nav{
-    color: var(--fg-200);
+    background-color: rgb(36,36,36);
+    height: 60px;
+    margin-bottom: 55px;
+  }
+  nav ul{
+    list-style: none;
+    display: flex; /* Add display: flex; to make list items appear in a row */
+    justify-content: center;
+    align-items: center;
+  }
+  nav ul li{
     display: flex;
-    justify-content: space-between;
-   
   }
-  a{
+  .logo {
+    margin-right: 10px;
+  }
+  a {
     color: var(--fg-200);
-    background-color: var(--bg-50);
     padding: 10px;
-    border-radius: 10px;
     letter-spacing: 2px;
-    
-    &:link{
-      text-decoration: none;
-    }
+    text-decoration: none; /* Move this line outside of &:link */
   }
-  
+  a:hover{
+    filter: brightness(40%);
+    transition: .1s;
+  }
   footer{
     color: var(--fg-200);
-    display: flex;
-    justify-content: space-between;
+    justify-content: right;
+    margin: 20px;
+    padding: 0;
+  }
+  footer ul{
+    list-style: none;
+    display: flex; /* Add display: flex; to make list items appear in a row */
+    justify-content: right;
+    align-items: center;
   }
 </style>

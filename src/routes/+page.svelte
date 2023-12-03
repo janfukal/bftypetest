@@ -254,7 +254,7 @@ function handleKeydown(event: KeyboardEvent) {
     --line-height: 1.3em;
     --lines: 3;
     position: relative;
-    width: 1250px;
+    width: 40%;
     max-height: calc(var(--line-height) * var(--lines) * 1.42);
     display: flex;
     flex-wrap: wrap;
@@ -304,7 +304,7 @@ function handleKeydown(event: KeyboardEvent) {
 
   .game {
     position: relative;
-    
+    margin: 0 auto;
     .input {
       position: absolute;
       opacity: 0;
