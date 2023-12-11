@@ -1,5 +1,32 @@
 <script lang="ts">
-  import{ onMount } from 'svelte'
+  import { onMount } from 'svelte';
+  import '../styles/app.scss';
+  import trophyIcon from './icons/trophy.png';
+  import userIcon from './icons/user.png';
+  import igIcon from './icons/instagram.png';
+  import { navigate } from 'svelte-routing';
+  import Leaderboards from './leaderboards/+page.svelte';
+
+  import { initializeApp } from 'firebase/app';
+  import { getAnalytics, isSupported } from 'firebase/analytics';
+  import { getAuth, type User } from 'firebase/auth';
+  import { getDatabase, ref, push, orderByChild, limitToFirst } from 'firebase/database';
+
+  
+  // FIREBASE konfigurace -------------------------------------------------------//
+  const firebaseConfig = {
+  apiKey: "AIzaSyDueIpbx9sx7T1QEhIjqhmaYMpLOzvfAbo",
+  authDomain: "bftypetest.firebaseapp.com",
+  projectId: "bftypetest",
+  storageBucket: "bftypetest.appspot.com",
+  messagingSenderId: "312410173260",
+  appId: "1:312410173260:web:29d60c54205af064af29e9",
+  measurementId: "G-7TFH8FE0FF"
+  };
+//-------------------------------------------------------------------------------//
+const firebaseApp = initializeApp(firebaseConfig);
+const database = getDatabase(firebaseApp);
+const leaderboardRef = ref(database, 'leaderboard');
 
   type Game = 'cekani na input' | 'probiha' | 'konec'
   type Word = string
@@ -53,10 +80,19 @@
     return words.reduce((count, word) => count + word.length, 0)
   }
 
-  function getResults() {
-    wordsPerMinute = getWordsPerMInute()
-    accuracy = getAccuracy()
-  }
+function getResults() {
+  wordsPerMinute = getWordsPerMInute();
+  accuracy = getAccuracy();
+
+  // Uložení do žebříčku
+  const newEntry = {
+    username: 'YourUsername', // Nahraďte svým uživatelským jménem
+    ratio: wordsPerMinute / accuracy,
+    date: new Date().toISOString(),
+  };
+
+  push(leaderboardRef, newEntry);
+}
 
   function updateGameState() {
     setLetter()
@@ -195,10 +231,46 @@ function handleKeydown(event: KeyboardEvent) {
     moveCaret(); 
   }
 }
-  onMount(async () => {
-    getWords(100)
-    focusInput()
-  })
+onMount(async () => {
+  getWords(100);
+  focusInput();
+
+  // Načítání žebříčku
+  const leaderboardSnapshot = await get(leaderboardRef, orderByChild('ratio'), limitToFirst(10));
+  const leaderboardData = [];
+
+  if (leaderboardSnapshot.exists()) {
+    leaderboardSnapshot.forEach((childSnapshot) => {
+      const entry = childSnapshot.val();
+      leaderboardData.push(entry);
+    });
+  }
+
+  // Porovnání s aktuálním skóre
+  const currentUserRatio = wordsPerMinute / accuracy;
+
+  if (
+    leaderboardData.length < 10 ||
+    currentUserRatio > leaderboardData[leaderboardData.length - 1].ratio
+  ) {
+    // Přepis žebříčku, protože aktuální skóre je lepší nebo žebříček není plný
+    const newEntry = {
+      username: 'YourUsername', // Nahraďte svým uživatelským jménem
+      ratio: currentUserRatio,
+      date: new Date().toISOString(),
+    };
+
+    // Přidání nového záznamu do žebříčku
+    const newLeaderboardRef = push(leaderboardRef);
+    set(newLeaderboardRef, newEntry);
+
+    // Omezení žebříčku na prvních 10 položek
+    const limitedLeaderboard = leaderboardData.concat(newEntry).sort((a, b) => b.ratio - a.ratio).slice(0, 10);
+
+    // Aktualizace žebříčku
+    set(leaderboardRef, limitedLeaderboard);
+  }
+});
 </script>
 
 {#if game !== 'konec'}
