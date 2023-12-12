@@ -24,18 +24,17 @@
   measurementId: "G-7TFH8FE0FF"
   };
 //-------------------------------------------------------------------------------//
-const firebaseApp = initializeApp(firebaseConfig);
-const database = getDatabase(firebaseApp);
-const leaderboardRef = ref(database, 'leaderboard');
+  const firebaseApp = initializeApp(firebaseConfig);
+  const database = getDatabase(firebaseApp);
+  const leaderboardRef = ref(database, 'leaderboard');
 //-------------------------------------------------------------------------------//
 
   let analytics;
   let user: User | null;
   
   onMount( () => {
-    // Initialize Firebase app
     const app = initializeApp(firebaseConfig);
-    const auth = getAuth(); // Initialize Firebase auth
+    const auth = getAuth();
 
     const unsubscribe = auth.onAuthStateChanged((authUser) => {
       user = authUser;
@@ -96,7 +95,7 @@ const leaderboardRef = ref(database, 'leaderboard');
   }
   nav ul{
     list-style: none;
-    display: flex; /* Add display: flex; to make list items appear in a row */
+    display: flex;
     justify-content: center;
     align-items: center;
   }
@@ -110,7 +109,7 @@ const leaderboardRef = ref(database, 'leaderboard');
     color: var(--fg-200);
     padding: 10px;
     letter-spacing: 2px;
-    text-decoration: none; /* Move this line outside of &:link */
+    text-decoration: none;
   }
   a:hover{
     filter: brightness(40%);
@@ -125,7 +124,7 @@ const leaderboardRef = ref(database, 'leaderboard');
   }
   footer ul{
     list-style: none;
-    display: flex; /* Add display: flex; to make list items appear in a row */
+    display: flex;
     justify-content: right;
     align-items: center;
     

@@ -9,7 +9,6 @@
   const leaderboardRef = ref(database, 'leaderboard');
 
   onMount(() => {
-    // Načítání dat ze žebříčku z Firebase
     onValue(leaderboardRef, (snapshot) => {
       leaderboardData = [];
 
@@ -22,20 +21,15 @@
     });
   });
 
-  // Vaše existující kód pro test (přizpůsobte ho podle potřeb)
   let wordsPerMinute = 0;
   let accuracy = 0;
 
   function getResults() {
-    // ... Vaš kód pro získání výsledků testu ...
-
-    // Výpočet WPM to accuracy ratio
     wpmAccuracyRatio = wordsPerMinute / accuracy;
   }
 </script>
 
 <style>
-  /* Přidejte svůj styling zde */
   .leaderboards-container {
     max-width: 600px;
     margin: 0 auto;

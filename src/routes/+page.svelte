@@ -83,10 +83,9 @@ const leaderboardRef = ref(database, 'leaderboard');
 function getResults() {
   wordsPerMinute = getWordsPerMInute();
   accuracy = getAccuracy();
-
-  // Uložení do žebříčku
+  
   const newEntry = {
-    username: 'YourUsername', // Nahraďte svým uživatelským jménem
+    username: 'YourUsername',
     ratio: wordsPerMinute / accuracy,
     date: new Date().toISOString(),
   };
@@ -235,7 +234,6 @@ onMount(async () => {
   getWords(100);
   focusInput();
 
-  // Načítání žebříčku
   const leaderboardSnapshot = await get(leaderboardRef, orderByChild('ratio'), limitToFirst(10));
   const leaderboardData = [];
 
@@ -246,28 +244,23 @@ onMount(async () => {
     });
   }
 
-  // Porovnání s aktuálním skóre
   const currentUserRatio = wordsPerMinute / accuracy;
 
   if (
     leaderboardData.length < 10 ||
     currentUserRatio > leaderboardData[leaderboardData.length - 1].ratio
   ) {
-    // Přepis žebříčku, protože aktuální skóre je lepší nebo žebříček není plný
     const newEntry = {
-      username: 'YourUsername', // Nahraďte svým uživatelským jménem
+      username: '',
       ratio: currentUserRatio,
       date: new Date().toISOString(),
     };
 
-    // Přidání nového záznamu do žebříčku
     const newLeaderboardRef = push(leaderboardRef);
     set(newLeaderboardRef, newEntry);
 
-    // Omezení žebříčku na prvních 10 položek
     const limitedLeaderboard = leaderboardData.concat(newEntry).sort((a, b) => b.ratio - a.ratio).slice(0, 10);
 
-    // Aktualizace žebříčku
     set(leaderboardRef, limitedLeaderboard);
   }
 });

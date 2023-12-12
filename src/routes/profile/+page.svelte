@@ -1,6 +1,6 @@
 <script>
   import { onMount } from 'svelte';
-  import { getAuth, updateProfile } from 'firebase/auth';
+  import { getAuth, updateProfile, signOut } from 'firebase/auth';
   // @ts-ignore
   import { format } from 'date-fns';
 
@@ -22,17 +22,22 @@
     newUsername = user.username;
     newBio = user.bio;
   };
-
+// ------------------------------------------------------------- //
+  const handleSignOut = async () => {
+    try {
+      await signOut(auth);
+      alert('You signed out!');
+    } catch (error) {
+      console.error('Error signing out:', error);
+    }
+  };
+// ------------------------------------------------------------- //
   const saveChanges = async () => {
-    const auth = getAuth();
-
     try {
       // @ts-ignore
       await updateProfile(auth.currentUser, {
         displayName: newUsername,
       });
-      // Optionally, update other user information like bio to a database
-      // Example: await updateBioInDatabase(auth.currentUser.uid, newBio);
       editMode = false;
       alert('Changes saved successfully!');
     } catch (error) {
@@ -41,8 +46,9 @@
     }
   };
 
+  const auth = getAuth();
+
   onMount(() => {
-    const auth = getAuth();
     const unsubscribe = auth.onAuthStateChanged((authUser) => {
       if (authUser) {
         const signUpTimestamp = authUser.metadata.creationTime;
@@ -96,7 +102,7 @@
   }
 
   button {
-    background-color: #007bff;
+    background-color: indianred;
     color: #fff;
     padding: 10px;
     border: none;
@@ -105,20 +111,18 @@
   }
 
   button:hover {
-    background-color: #0056b3;
+    filter: brightness(120%);
   }
 </style>
 
 <div class="profile-container">
   {#if editMode}
-    <!-- Editable fields when in edit mode -->
     <label>
       <strong>Username:</strong>
       <input type="text" bind:value={newUsername} class="edit-field" />
     </label>
     <button on:click={saveChanges}>Save</button>
   {:else}
-    <!-- Display username, edit icon, bio, and sign-up date when not in edit mode -->
     <p>
       <strong>Username:</strong> 
       {user.username}
@@ -127,4 +131,7 @@
     <p><strong>Joined:</strong> {user.signUpDate}</p>
   {/if}
   <p><strong>Email:</strong> {user.email}</p>
+  <a href="/">
+    <button on:click={handleSignOut}>Sign Out</button>
+  </a>
 </div>

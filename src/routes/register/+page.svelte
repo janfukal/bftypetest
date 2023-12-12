@@ -1,6 +1,7 @@
 <script lang="ts">
   import { onMount } from 'svelte';
   import { getAuth, createUserWithEmailAndPassword, updateProfile } from 'firebase/auth';
+  import { goto } from '$app/navigation';
 
   let email = '';
   let password = '';
@@ -10,13 +11,12 @@
     const auth = getAuth();
 
     try {
-      // Create user with email and password
       const userCredential = await createUserWithEmailAndPassword(auth, email, password);
 
-      // Update user profile with the provided username
       await updateProfile(userCredential.user, { displayName: username });
 
       alert('Registration successful!');
+      goto('/');
     } catch (error) {
       console.error('Error registering user:', error);
       alert('Registration failed. Please try again.');
@@ -33,7 +33,7 @@
   }
 
   form {
-    width: 360px; /* Adjust the width as needed */
+    width: 360px;
     margin: 20px;
     padding: 20px;
     border: 1px solid #ccc;
