@@ -85,7 +85,7 @@ function getResults() {
   accuracy = getAccuracy();
   
   const newEntry = {
-    username: 'YourUsername',
+    username: '',
     ratio: wordsPerMinute / accuracy,
     date: new Date().toISOString(),
   };
