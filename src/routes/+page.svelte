@@ -63,6 +63,7 @@ const leaderboardRef = ref(database, 'leaderboard');
 
     wordsPerMinute = 0
     accuracy = 0
+    focusInput()
   }
 
   function getWordsPerMInute(){
