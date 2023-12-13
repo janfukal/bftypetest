@@ -51,7 +51,7 @@ const leaderboardRef = ref(database, 'leaderboard');
 
   function resetGame() {
     toggleReset = !toggleReset
-
+    focusInput()
     setGameState('cekani na input')
     getWords(100)
 
@@ -100,6 +100,7 @@ function getResults() {
     updateLine()
     resetLetter()
     moveCaret()
+    focusInput()
   }
 
   function setLetter(){
