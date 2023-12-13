@@ -71,7 +71,7 @@
   <footer>
     <ul>
       <li><a href="https://www.instagram.com/bflmpsvz.dev/" target="_blank"> <img src={igIcon} alt="Instagram Icon" /> </a></li>
-      <li>bflmpsvz @ Střední průmyslová škola Třebíč</li>
+      <li>bflmpsvz.dev @ Střední průmyslová škola Třebíč</li>
     </ul>
   </footer>
 
