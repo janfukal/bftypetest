@@ -12,7 +12,7 @@
 	"devDependencies": {
 		"@sveltejs/adapter-auto": "^2.0.0",
 		"@sveltejs/adapter-vercel": "^3.1.0",
-		"@sveltejs/kit": "^1.27.4",
+		"@sveltejs/kit": "^1.30.4",
 		"sass": "^1.69.5",
 		"svelte": "^4.0.5",
 		"svelte-check": "^3.6.0",
@@ -23,7 +23,7 @@
 	"type": "module",
 	"dependencies": {
 		"date-fns": "^2.30.0",
-		"firebase": "^10.7.1",
+		"firebase": "^10.8.1",
 		"svelte-kit": "^1.2.0",
 		"svelte-routing": "^2.10.0"
 	}
